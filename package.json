@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/alessandrosangalli/ph1-emulator/issues"
   },
-  "homepage": "https://github.com/alessandrosangalli/ph1-emulator#readme"
+  "homepage": "https://github.com/alessandrosangalli/ph1-emulator#readme",
+  "dependencies": {
+    "git-commit-msg-linter": "^2.4.2"
+  }
 }
