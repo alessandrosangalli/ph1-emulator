@@ -17,7 +17,9 @@
     "url": "https://github.com/alessandrosangalli/ph1-emulator/issues"
   },
   "homepage": "https://github.com/alessandrosangalli/ph1-emulator#readme",
-  "dependencies": {
-    "git-commit-msg-linter": "^2.4.2"
+  "devDependencies": {
+    "git-commit-msg-linter": "^2.4.2",
+    "@types/node": "^13.9.5",
+    "typescript": "^3.8.3"
   }
 }
