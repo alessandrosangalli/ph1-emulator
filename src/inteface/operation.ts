@@ -1,0 +1,18 @@
+export default interface Operation {
+  nop()
+  ldr()
+  str()
+  add()
+  sub()
+  mul()
+  div()
+  not()
+  and()
+  or()
+  xor()
+  jmp()
+  jeq()
+  jg()
+  jl()
+  hlt()
+}
