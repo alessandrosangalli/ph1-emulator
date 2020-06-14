@@ -1,5 +1,5 @@
 <h1><strong> Emulador-PH1 </strong> </h1>
-    <h2> Trabalho de Arquitetura e Organização de Computadores I, ministrada pelo Prof. Me. Marcos Jose Brusso, pela Universidade de Passo Fundo - UPF </h2>
+    <h2> Trabalho de AOC 1, ministrada pelo Prof. Me. Marcos Jose Brusso, pela UPF </h2>
     <h5><strong>Nome:</strong> Alessandro A. Sangalli</h5> <h5><strong>Matrícula: 158095</strong> </h5>
     <h5><strong>Nome:</strong> William S. Nepomuceno</h5> <h5><strong>Matrícula: 178344</strong> </h5>
     <ul>
