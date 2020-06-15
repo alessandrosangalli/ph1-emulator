@@ -7,8 +7,12 @@
 
 <li><h3>Compilação e Execução</h3></li>
 
-<p>Para compilação é necessário ter instalado o node.js e npm</p>
-<p>Para execução executar o comando npm install dentro da pasta com o código, após abrir o projeto no Visual Studio Code e iniciar o programa, presionando F5</p>
+<p>Para compilação é necessário é necessário entrar na raiz do projeto e executar os seguintes comandos:</p>
+<ul>
+    <li>npm install</li>
+    <li>tsc</li>
+    <li>node ./dist/src/app.js</li>
+</ul>
 
 <li><h3>Entrada</h3></li>
 
