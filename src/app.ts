@@ -4,16 +4,6 @@ import readline from 'readline'
 
 const fileReader = new TxtReader()
 const ph1Emulator = new PH1Emulator(fileReader)
-const numberToHex = (number: number): string => {
-  let hex = number.toString(16).toUpperCase()
-  const padding = 2
-
-  while (hex.length < padding) {
-    hex = `0${hex}`
-  }
-
-  return hex
-}
 
 async function startEmulator (inputFile: string): Promise<void> {
   await ph1Emulator.setFile(inputFile)
@@ -24,22 +14,23 @@ async function startEmulator (inputFile: string): Promise<void> {
   console.log('')
   for (const line of result) {
     const operator = line.operator === undefined ? '' : line.operator
-    const value = line.value === undefined ? '' : numberToHex(line.value)
+    const value = line.value === undefined ? '' : ph1Emulator.numberToHex(line.value)
+    const comment = line.comment === undefined ? '' : line.comment
 
-    console.log(`${operator} ${value}`)
+    console.log(`${operator} ${value} ${comment}`)
   }
   console.log('')
   console.log(`${result.length} instructions executed`)
   console.log('')
   console.log('Registers:')
-  console.log(`AC ${numberToHex(accumulator)}`)
-  console.log(`PC ${numberToHex(programCounter)}`)
+  console.log(`AC ${ph1Emulator.numberToHex(accumulator)}`)
+  console.log(`PC ${ph1Emulator.numberToHex(programCounter)}`)
   console.log('')
   let modifiedEntries = ''
   for (const address in ph1Emulator.inputData) {
     if (ph1Emulator.inputData[address].modified) {
-      const hexValue = numberToHex(ph1Emulator.inputData[address].value)
-      const hexAddress = numberToHex(parseInt(address))
+      const hexValue = ph1Emulator.numberToHex(ph1Emulator.inputData[address].value)
+      const hexAddress = ph1Emulator.numberToHex(parseInt(address))
       modifiedEntries += `${hexAddress} ${hexValue}`
     }
   }
