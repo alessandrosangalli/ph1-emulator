@@ -11,7 +11,9 @@ export class TxtReader implements FileReader {
     })
     const linesToReturn = []
     for await (const line of lines) {
-      linesToReturn.push(line)
+      if (line.length > 1) {
+        linesToReturn.push(line)
+      }
     }
     return linesToReturn
   }
