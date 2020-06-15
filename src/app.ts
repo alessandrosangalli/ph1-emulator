@@ -1,5 +1,6 @@
 import { PH1Emulator } from './ph1-emulator'
 import { TxtReader } from './txt-reader'
+import readline from 'readline'
 
 const fileReader = new TxtReader()
 const ph1Emulator = new PH1Emulator(fileReader)
@@ -14,8 +15,7 @@ const numberToHex = (number: number): string => {
   return hex
 }
 
-async function startEmulator (): Promise<void> {
-  const inputFile: string = './src/teste.txt'
+async function startEmulator (inputFile: string): Promise<void> {
   await ph1Emulator.setFile(inputFile)
   const result = ph1Emulator.execute()
   const accumulator = ph1Emulator.getAccumulator()
@@ -47,5 +47,13 @@ async function startEmulator (): Promise<void> {
   console.log(modifiedEntries.toString())
 }
 
-startEmulator()
-  .catch(err => console.log(err))
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
+
+rl.question('Digite o caminho do arquivo de entrada: ', (inputFile) => {
+  startEmulator(inputFile)
+    .catch(err => console.log(err))
+  rl.close()
+})
