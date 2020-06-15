@@ -45,64 +45,64 @@ export class PH1Emulator {
       } else if (this.inputData[this.programCounter].value === this.hexToNumber('10')) {
         this.programCounter++
         this.accumulator = this.inputData[this.inputData[this.programCounter].value].value
-        outputData.push({ operator: 'LDR', value: this.inputData[this.programCounter].value })
+        outputData.push({ operator: 'LDR', value: this.inputData[this.programCounter].value, comment: `; AC <- MEM[${this.hexToNumber(this.inputData[this.programCounter].value.toString())}]` })
       } else if (this.inputData[this.programCounter].value === this.hexToNumber('20')) {
         this.programCounter++
         this.inputData[this.inputData[this.programCounter].value] = { value: this.accumulator, modified: true }
-        outputData.push({ operator: 'STR', value: this.inputData[this.programCounter].value })
+        outputData.push({ operator: 'STR', value: this.inputData[this.programCounter].value, comment: `; MEM[${this.hexToNumber(this.inputData[this.programCounter].value.toString())}] <- STR` })
       } else if (this.inputData[this.programCounter].value === this.hexToNumber('30')) {
         this.programCounter++
         this.accumulator += this.inputData[this.inputData[this.programCounter].value].value
-        outputData.push({ operator: 'ADD', value: this.inputData[this.programCounter].value })
+        outputData.push({ operator: 'ADD', value: this.inputData[this.programCounter].value, comment: `; AC <- AC + MEM[${this.hexToNumber(this.inputData[this.programCounter].value.toString())}]` })
       } else if (this.inputData[this.programCounter].value === this.hexToNumber('40')) {
         this.programCounter++
         this.accumulator -= this.inputData[this.inputData[this.programCounter].value].value
-        outputData.push({ operator: 'SUB', value: this.inputData[this.programCounter].value })
+        outputData.push({ operator: 'SUB', value: this.inputData[this.programCounter].value, comment: `; AC <- AC - MEM[${this.hexToNumber(this.inputData[this.programCounter].value.toString())}]` })
       } else if (this.inputData[this.programCounter].value === this.hexToNumber('50')) {
         this.programCounter++
         this.accumulator *= this.inputData[this.inputData[this.programCounter].value].value
-        outputData.push({ operator: 'MUL', value: this.inputData[this.programCounter].value })
+        outputData.push({ operator: 'MUL', value: this.inputData[this.programCounter].value, comment: `; AC <- AC * MEM[${this.hexToNumber(this.inputData[this.programCounter].value.toString())}]` })
       } else if (this.inputData[this.programCounter].value === this.hexToNumber('60')) {
         this.programCounter++
         this.accumulator /= this.inputData[this.inputData[this.programCounter].value].value
-        outputData.push({ operator: 'DIV', value: this.inputData[this.programCounter].value })
+        outputData.push({ operator: 'DIV', value: this.inputData[this.programCounter].value, comment: `; AC <- AC / MEM[${this.hexToNumber(this.inputData[this.programCounter].value.toString())}]` })
       } else if (this.inputData[this.programCounter].value === this.hexToNumber('70')) {
         this.accumulator = (~this.accumulator) & 0xff
-        outputData.push({ operator: 'NOT' })
+        outputData.push({ operator: 'NOT', comment: '; AC <- !AC' })
       } else if (this.inputData[this.programCounter].value === this.hexToNumber('80')) {
         this.programCounter++
         this.accumulator = (this.accumulator & this.inputData[this.inputData[this.programCounter].value].value)
-        outputData.push({ operator: 'AND', value: this.inputData[this.programCounter].value })
+        outputData.push({ operator: 'AND', value: this.inputData[this.programCounter].value, comment: `; AC <- AC & MEM[${this.hexToNumber(this.inputData[this.programCounter].value.toString())}]` })
       } else if (this.inputData[this.programCounter].value === this.hexToNumber('90')) {
         this.programCounter++
         this.accumulator = (this.accumulator | this.inputData[this.inputData[this.programCounter].value].value)
-        outputData.push({ operator: 'OR', value: this.inputData[this.programCounter].value })
+        outputData.push({ operator: 'OR', value: this.inputData[this.programCounter].value, comment: `; AC <- AC | MEM[${this.hexToNumber(this.inputData[this.programCounter].value.toString())}]` })
       } else if (this.inputData[this.programCounter].value === this.hexToNumber('a0')) {
         this.programCounter++
         this.accumulator = (this.accumulator ^ this.inputData[this.inputData[this.programCounter].value].value)
-        outputData.push({ operator: 'XOR', value: this.inputData[this.programCounter].value })
+        outputData.push({ operator: 'XOR', value: this.inputData[this.programCounter].value, comment: `; AC <- AC ^ MEM[${this.hexToNumber(this.inputData[this.programCounter].value.toString())}]` })
       } else if (this.inputData[this.programCounter].value === this.hexToNumber('b0')) {
         this.programCounter++
         this.programCounter = this.inputData[this.programCounter].value
-        outputData.push({ operator: 'JMP', value: this.inputData[this.programCounter].value })
+        outputData.push({ operator: 'JMP', value: this.inputData[this.programCounter].value, comment: `; PC <- MEM[${this.hexToNumber(this.inputData[this.programCounter].value.toString())}]` })
         continue
       } else if (this.inputData[this.programCounter].value === this.hexToNumber('c0')) {
         this.programCounter++
-        outputData.push({ operator: 'JEQ', value: this.inputData[this.programCounter].value })
+        outputData.push({ operator: 'JEQ', value: this.inputData[this.programCounter].value, comment: `; PC <- MEM[${this.hexToNumber(this.inputData[this.programCounter].value.toString())}]` })
         if (this.accumulator === 0) {
           this.programCounter = this.inputData[this.programCounter].value
           continue
         }
       } else if (this.inputData[this.programCounter].value === this.hexToNumber('d0')) {
         this.programCounter++
-        outputData.push({ operator: 'JG', value: this.inputData[this.programCounter].value })
+        outputData.push({ operator: 'JG', value: this.inputData[this.programCounter].value, comment: `; PC <- MEM[${this.hexToNumber(this.inputData[this.programCounter].value.toString())}]` })
         if (this.accumulator > 0 && this.accumulator < 128) {
           this.programCounter = this.inputData[this.programCounter].value
           continue
         }
       } else if (this.inputData[this.programCounter].value === this.hexToNumber('e0')) {
         this.programCounter++
-        outputData.push({ operator: 'JL', value: this.inputData[this.programCounter].value })
+        outputData.push({ operator: 'JL', value: this.inputData[this.programCounter].value, comment: `; PC <- MEM[${this.hexToNumber(this.inputData[this.programCounter].value.toString())}]` })
         if (this.accumulator > 127) {
           this.programCounter = this.inputData[this.programCounter].value
           continue
