@@ -35,7 +35,7 @@ async function startEmulator (inputFile: string): Promise<void> {
     }
   }
   console.log('Memory:')
-  console.log(modifiedEntries.toString())
+  console.log(modifiedEntries.toString() === '' ? 'No changes' : modifiedEntries.toString())
 }
 
 const rl = readline.createInterface({
