@@ -7,8 +7,9 @@
 
 <li><h3>Compilação e Execução</h3></li>
 
-<p>Para rodar o programa é necessário entrar na raiz e executar os comandos:</p>
+<p>Para rodar o programa é necessário ter o NODE.js instalado e entrar na raiz e executar os comandos:</p>
 <ul>
+    <li>npm install</li>
     <li>tsc</li>
     <li>node ./dist/src/app.js</li>
 </ul>
