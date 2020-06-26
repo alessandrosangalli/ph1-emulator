@@ -31,7 +31,7 @@ async function startEmulator (inputFile: string): Promise<void> {
     if (ph1Emulator.inputData[address].modified) {
       const hexValue = ph1Emulator.numberToHex(ph1Emulator.inputData[address].value)
       const hexAddress = ph1Emulator.numberToHex(parseInt(address))
-      modifiedEntries += `${hexAddress} ${hexValue}`
+      modifiedEntries += `${hexAddress} ${hexValue} \n`
     }
   }
   console.log('Memory:')
