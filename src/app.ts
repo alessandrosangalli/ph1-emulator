@@ -1,71 +1,50 @@
-const plays = {
-    "hamlet": {"name": "Hamlet", "type": "tragedy"},
-    "as-like": {"name": "As You Like It", "type": "comedy"},
-    "othello": {"name": "Othello", "type": "tragedy"}
-}
+import { PH1Emulator } from './ph1-emulator'
+import { TxtReader } from './txt-reader'
+import readline from 'readline'
 
-const invoices = {
-    "customer": "BigCo",
-    "performaces": [
-        {
-            "playID": "hamlet",
-            "audience": 55
-        },
-        {
-            "playID": "as-like",
-            "audience": 35
-        },
-        {
-            "playID": "othello",
-            "audience": 40
-        }
-    ]
-}
+const fileReader = new TxtReader()
+const ph1Emulator = new PH1Emulator(fileReader)
 
-function statament(invoice : any, plays : any) {
-    let totalAmount : any = 0;
-    let volumeCredits : any = 0;
-    let result : String = `Statament for ${invoice.customer}\n`;
-    const format = new Intl.NumberFormat("en-us", {style: "currency", currency: "USD", minimumFractionDigits: 2}).format;
+async function startEmulator (inputFile: string): Promise<void> {
+  await ph1Emulator.setFile(inputFile)
+  const result = ph1Emulator.execute()
+  const accumulator = ph1Emulator.getAccumulator()
+  const programCounter = ph1Emulator.getProgramCounter()
+  console.log(`Input file: ${inputFile}`)
+  console.log('')
+  for (const line of result) {
+    const operator = line.operator === undefined ? '' : line.operator
+    const value = line.value === undefined ? '' : ph1Emulator.numberToHex(line.value)
+    const comment = line.comment === undefined ? '' : line.comment
 
-    for (let perf of invoice.performaces) {
-        const play = plays[perf.playID];
-        let thisAmount = 0;
-        
-        switch(play.type) {
-            case "tragedy":
-                thisAmount = 40000;
-                if (perf.audience > 30) {
-                    thisAmount += 1000 * (perf.audience - 30);
-                }
-            break;
-            case "comedy":
-                thisAmount = 30000;
-                if (perf.audience > 20) {
-                    thisAmount += 10000 + 500 * (perf.audience - 20)
-                }
-
-                thisAmount += 300 * perf.audience;
-
-            break;
-            default:
-                throw new Error(`unknow type: ${play.type}`);
-        }
-
-        volumeCredits += Math.max(perf.audience - 30, 0);
-
-        if (play.type === "comedy") {
-            volumeCredits += Math.floor(perf.audience / 5);
-        }
-
-        result += `  ${play.name} : ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
-        totalAmount += thisAmount;
+    console.log(`${operator} ${value} ${comment}`)
+  }
+  console.log('')
+  console.log(`${result.length} instructions executed`)
+  console.log('')
+  console.log('Registers:')
+  console.log(`AC ${ph1Emulator.numberToHex(accumulator)}`)
+  console.log(`PC ${ph1Emulator.numberToHex(programCounter)}`)
+  console.log('')
+  let modifiedEntries = ''
+  for (const address in ph1Emulator.inputData) {
+    if (ph1Emulator.inputData[address].modified) {
+      const hexValue = ph1Emulator.numberToHex(ph1Emulator.inputData[address].value)
+      const hexAddress = ph1Emulator.numberToHex(parseInt(address))
+      modifiedEntries += `${hexAddress} ${hexValue} \n`
     }
-
-    result += `Amount owed is ${format(totalAmount / 100)}\n`;
-    result += `You earned ${volumeCredits} credits\n`;
-
-    return result;
+  }
+  console.log('Memory:')
+  console.log(modifiedEntries.toString() === '' ? 'No changes' : modifiedEntries.toString())
 }
 
-console.log(statament(invoices, plays));
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
+
+rl.question('Digite o caminho do arquivo de entrada: ', (inputFile) => {
+  startEmulator(inputFile)
+    .catch(err => console.log(err))
+  rl.close()
+})
